@@ -59,7 +59,16 @@ def rgb_channel(img):
 	plt.imshow(img_rgb)
 	plt.show()
 
-
+# make into a function with a parameter
+def colour_reduction(img):
+	img = np.array(img)
+	# Making Pixel values discrete by first division by // which gives int and then multiply by the same factor
+	img_0 = (img // 64) * 64
+	img_1 = (img // 128) * 128
+	img_all = np.concatenate((img, img_0, img_1), axis=1)
+	plt.figure(figsize=(15, 15))
+	plt.imshow(img_all)
+	plt.show()
 
 '''
 1. Display Image
@@ -106,6 +115,7 @@ while choice != 0:
 		img = padding(img, width)
 	elif choice == 8:
 		rgb_channel(img)
-		
+	elif choice == 9:
+		colour_reduction(img)
 		
 
