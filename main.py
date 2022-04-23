@@ -40,6 +40,11 @@ def negative(img):
 	plt.show()
 	return img
 
+def padding(img, width):
+	img = np.array(Image.open('foxy.jpg'))
+	img = np.pad(img, ((width, width),(width, width),(0,0)), mode='constant')
+	display_image(img)
+	return img
 
 '''
 1. Display Image
@@ -48,9 +53,11 @@ def negative(img):
 4. Rotate By Angle
 5. Negative Image
 6. Grayscale Image
+7. Pad Image
+8. Visualize RGB Channels (Don't save image) 
 '''
 
-choice = 5
+choice = 7
 
 # while choice != -1: 
 # 	choice = int(input("Enter your choice: "))
@@ -63,7 +70,7 @@ elif choice == 3:
 	img = rotate_right(img)
 elif choice == 4:
 	direction = input("Enter direction to rotate (r or l): ")
-	angle = int(input("Enter angle to rotate by:"))
+	angle = int(input("Enter angle to rotate by: "))
 	if direction == 'l':
 		angle = 360 - angle
 	img = rotate_by_angle(img, angle)
@@ -71,4 +78,7 @@ elif choice == 5:
 	img = negative(img)
 elif choice == 6:
 	img = grayscale(img)
+elif choice == 7:
+	width = int(input("Enter padding width: "))
+	img = padding(img, width)
 	
