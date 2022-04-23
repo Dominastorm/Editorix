@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image, ImageOps
-from scipy.ndimage.interpolation import rotate
+from scipy.ndimage import rotate
 
 img_file = "foxy.jpg"
 img = np.array(Image.open(img_file))
@@ -32,9 +32,15 @@ def grayscale(img):
 	img = np.dot(img[...,:3], rgb_weights)
 	plt.imshow(img, cmap=plt.get_cmap("gray"))
 	plt.show()
+	return img
 	
+def negative(img):
+	img = 255 - img
+	plt.imshow(img)
+	plt.show()
+	return img
 
-choice = 2
+
 '''
 1. Display Image
 2. Rotate Left
@@ -65,3 +71,4 @@ elif choice == 5:
 	img = negative(img)
 elif choice == 6:
 	img = grayscale(img)
+	
