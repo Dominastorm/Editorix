@@ -41,7 +41,6 @@ def negative(img):
 	return img
 
 def padding(img, width):
-	img = np.array(Image.open('foxy.jpg'))
 	img = np.pad(img, ((width, width),(width, width),(0,0)), mode='constant')
 	display_image(img)
 	return img
@@ -49,7 +48,6 @@ def padding(img, width):
 
 # make red, green and blue filters
 def rgb_channel(img):
-	img = np.array(img)
 	img_R, img_G, img_B = img.copy(), img.copy(), img.copy()
 	img_R[:, :, (1, 2)] = 0
 	img_G[:, :, (0, 2)] = 0
@@ -70,6 +68,68 @@ def colour_reduction(img):
 	plt.imshow(img_all)
 	plt.show()
 
+# make into function with parameter
+def binarize(img):
+	img_64 = (img > 64) * 255
+	img_128 = (img > 128) * 255
+	fig = plt.figure(figsize=(15, 15))
+	img_all = np.concatenate((img, img_64, img_128), axis=1)
+	plt.imshow(img_all)
+
+# make into function with parameter
+def trim_image(img):
+	img = img[128:-128, 128:-128, :]
+	plt.imshow(img)
+	plt.show()
+
+def pixel_intensity_histogram(img):	
+	img_flat = img.flatten()
+	plt.hist(img_flat, bins=200, range=[0, 256])
+	plt.title("Number of pixels in each intensity value")
+	plt.xlabel("Intensity")
+	plt.ylabel("Number of pixels")
+	plt.show()
+
+def mask(img):
+	ones = np.ones((img.shape[0] // 2, img.shape[1] // 2, 3))
+	zeros = np.zeros(((img.shape[0] // 4, img.shape[1] // 4, 3)))
+	zeros_mid = np.zeros(((img.shape[0] // 2, img.shape[1] // 4, 3)))
+	up = np.concatenate((zeros, zeros, zeros, zeros), axis=1)
+	middle = np.concatenate((zeros_mid, ones, zeros_mid), axis=1)
+	down = np.concatenate((zeros, zeros, zeros, zeros), axis=1)
+	mask = np.concatenate((up, middle, down), axis=0)
+	mask = mask / 255
+	img0 = mask * img
+	fig = plt.figure(figsize=(10, 10))
+	fig.add_subplot(1, 2, 1)
+	plt.imshow(img)
+	fig.add_subplot(1, 2, 2)
+	plt.imshow(img0)
+
+def paste_with_slice(img, img0):
+	src = img.resize((128, 128))
+	dst = img0.resize((256, 256)) // 4
+	dst_copy = dst.copy()
+	dst_copy[64:128, 128:192] = src[32:96, 32:96]
+	fig = plt.figure(figsize=(10, 10))
+	fig.add_subplot(1, 2, 1)
+	plt.imshow(src)
+	plt.title('Original')
+	fig.add_subplot(1, 2, 2)
+	plt.imshow(dst_copy)
+	plt.title('Pasted with slice')
+	plt.show()
+
+def blend_images(img, img0):
+	img0 = img0.resize(img.shape[1::-1]) # resize takes 2 arguments (WIDTH, HEIGHT)
+	print(img.dtype)
+	# uint8
+	dst = (img * 0.6 + img0 * 0.4).astype(np.uint8)   # Blending them in
+	plt.figure(figsize=(10, 10))
+	plt.imshow(dst)
+	plt.show()
+
+
 '''
 1. Display Image
 2. Rotate Left
@@ -83,10 +143,10 @@ def colour_reduction(img):
 10. Trim Image
 11. Paste image with slice
 12. Binarize Image
-13. Flip Image
+13. Lateral Inversion
 14. Blend Two Images
 15. Mask Image
-16. Plot Histogram for Pixel Density
+16. Plot Histogram for Pixel intensity
 0. Quit
 '''
 
@@ -117,5 +177,19 @@ while choice != 0:
 		rgb_channel(img)
 	elif choice == 9:
 		colour_reduction(img)
+	elif choice == 10:
+		trim_image(img)
+	elif choice == 11:
+		paste_with_slice(img, img)
+	elif choice == 12:
+		binarize(img)
+	elif choice == 13:
+		img = np.fliplr(img)
+	elif choice == 14:
+		img = blend_images(img)
+	elif choice == 15:
+		img = mask(img)
+	elif choice == 16:
+		pixel_intensity_histogram(img)
 		
 
