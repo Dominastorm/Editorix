@@ -1,4 +1,5 @@
 # Importing all the required modules
+import re
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image, ImageOps
@@ -75,6 +76,7 @@ def binarize(img):
 	fig = plt.figure(figsize=(15, 15))
 	img_all = np.concatenate((img, img_64, img_128), axis=1)
 	plt.imshow(img_all)
+	plt.show()
 
 # make into function with parameter
 def trim_image(img):
@@ -105,6 +107,7 @@ def mask(img):
 	plt.imshow(img)
 	fig.add_subplot(1, 2, 2)
 	plt.imshow(img0)
+	plt.show()
 
 def paste_with_slice(img, img0):
 	src = img.resize((128, 128))
@@ -185,11 +188,21 @@ while choice != 0:
 		binarize(img)
 	elif choice == 13:
 		img = np.fliplr(img)
+		display_image(img)
 	elif choice == 14:
 		img = blend_images(img)
 	elif choice == 15:
 		img = mask(img)
 	elif choice == 16:
 		pixel_intensity_histogram(img)
-		
 
+save_choice = input("Do you wish to save the image? (y or n): ")	
+
+if save_choice.lower() == 'y':
+	name = input("Enter name for file (without extension): ")
+	res = Image.fromarray(img)
+	res.save(name+".jpg")
+	print(f"Image saved as {name}.jpg".format(name=name))
+
+print("Thank you for using Editorix!")
+	
