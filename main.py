@@ -144,18 +144,18 @@ def blend_images(img, img0):
 8. Visualize RGB Channels (Don't save image) 
 9. Colour Reduction
 10. Trim Image
-11. Paste image with slice
+11. Paste image with slice @
 12. Binarize Image
 13. Lateral Inversion
-14. Blend Two Images
+14. Blend Two Images @
 15. Mask Image
-16. Plot Histogram for Pixel intensity
+16. Plot Histogram for Pixel intensity @
 0. Quit
 '''
 
-choice = 1
+choice = 0
 
-while choice != 0: 
+while choice > -1: 
 	choice = int(input("Enter your choice: "))
 	if choice == 1:
 		display_image(img)
